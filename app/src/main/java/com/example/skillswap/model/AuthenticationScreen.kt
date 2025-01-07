@@ -162,6 +162,7 @@ fun LoginScreen() {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
+
             ) {
                 Text("Забыли пароль?")
             }
