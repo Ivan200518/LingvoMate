@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "190482400602",
+    "project_id": "tandemprototype",
+    "storage_bucket": "tandemprototype.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190482400602:android:7aeeda892dde080063df63",
+        "android_client_info": {
+          "package_name": "com.example.lingvomate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190482400602-1tsrkr9f86502gvtmfs4gsk8leto9cga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tandemprototype",
+            "certificate_hash": "8fee75f2e823ea21ed189ffcd1bdaf3107093123"
+          }
+        },
+        {
+          "client_id": "190482400602-bh5ap4u0qv8u9aiq0fm062pbd9kvqptj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq7MOjDaMkdIwp8AnIzrmVIHmwsTTmNjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190482400602-bh5ap4u0qv8u9aiq0fm062pbd9kvqptj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

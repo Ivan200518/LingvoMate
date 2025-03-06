@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">LingvoMate</string>
+    <string name="app_name_with">With LingvoMate</string>
+    <string name="welcome_login">Hello, Welcome Back</string>
+    <string name="login_text">Happy to see you again,to use your \naccount please login first.</string>
+    <string name="welcome_title">Get Closer To </string>
+    <string name="everyone">Everyone</string>
+    <string name="start_welcome">Get Started</string>
+    <string name="email_enter">Type email address</string>
+    <string name="password_enter">Type password</string>
+    <string name="login_button">Login</string>
+    <string name="register_title">Create Your Account</string>
+    <string name="create_account">Sign Up</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="to_register_screen">Don t have an account yet?</string>
+    <string name="web_client_auth_id">190482400602-sieku4sq0nbmi2ig4igvmun8eecieg85.apps.googleusercontent.com</string>
+
+</resources>
