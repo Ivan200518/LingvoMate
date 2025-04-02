@@ -1,4 +1,6 @@
 import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -26,12 +28,12 @@ class GoogleAuthClient(
             println(tag + "already signed in")
             return true
         }
-
         return false
     }
 
     suspend fun signIn(): Boolean {
         if (isSingedIn()) {
+
             return true
         }
 
@@ -47,7 +49,7 @@ class GoogleAuthClient(
         }
     }
 
-    private suspend fun handleSingIn(result: GetCredentialResponse): Boolean {
+    private suspend fun handleSingIn(result: GetCredentialResponse, ): Boolean {
         val credential = result.credential
 
         if (
@@ -68,15 +70,23 @@ class GoogleAuthClient(
                 )
                 val authResult = firebaseAuth.signInWithCredential(authCredential).await()
 
-                return authResult.user != null
+                if (authResult.user != null) {
+
+                    return true
+                } else {
+
+                    return false
+                }
 
             } catch (e: GoogleIdTokenParsingException) {
                 println(tag + "GoogleIdTokenParsingException: ${e.message}")
+
                 return false
             }
 
         } else {
             println(tag + "credential is not GoogleIdTokenCredential")
+
             return false
         }
 
@@ -104,6 +114,7 @@ class GoogleAuthClient(
         credentialManager.clearCredentialState(
             ClearCredentialStateRequest()
         )
+        Log.d("My Log", "Sign Out")
         firebaseAuth.signOut()
     }
 

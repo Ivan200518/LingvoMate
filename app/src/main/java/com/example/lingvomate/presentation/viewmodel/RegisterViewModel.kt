@@ -35,7 +35,7 @@ class RegisterViewModel() : ViewModel() {
 
     var state by mutableStateOf(RegisterScreenState())
         private set
-    var registerDataError = mutableStateOf(RegisterDataError())
+    var registerDataError by mutableStateOf(RegisterDataError())
         private set
     var isFormValid by mutableStateOf(false)
         private set
@@ -61,7 +61,7 @@ class RegisterViewModel() : ViewModel() {
             !Patterns.EMAIL_ADDRESS.matcher(state.email).matches() -> "Введите корректный email"
             else -> ""
         }
-        this.registerDataError.value = registerDataError.value.copy(emailError = newErrorMessage)
+        this.registerDataError = registerDataError.copy(emailError = newErrorMessage)
         updateFormValidity()
     }
 
@@ -73,15 +73,15 @@ class RegisterViewModel() : ViewModel() {
             !state.password.any { it.isDigit() } -> "Пароль должен содержать хотя бы одну цифру"
             else -> ""
         }
-        this.registerDataError.value = registerDataError.value.copy(passwordError = newErrorMessage)
+        this.registerDataError= registerDataError.copy(passwordError = newErrorMessage)
         updateFormValidity()
     }
 
     private fun updateFormValidity(): Boolean {
-        isFormValid = registerDataError.value.emailError.isEmpty() && registerDataError.value.passwordError.isEmpty()
+        if (state.password.isNotEmpty() && state.email.isNotEmpty())
+            isFormValid = registerDataError.emailError.isEmpty() && registerDataError.passwordError.isEmpty()
         return isFormValid
     }
-
 
 
 

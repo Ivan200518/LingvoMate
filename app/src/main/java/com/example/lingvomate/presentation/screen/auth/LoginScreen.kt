@@ -30,6 +30,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,24 +52,27 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import com.example.lingvomate.R
 import com.example.lingvomate.presentation.navigation.Screen
 import com.example.lingvomate.presentation.screen.state.LoginScreenEvent
 import com.example.lingvomate.presentation.screen.state.LoginScreenState
 import com.example.lingvomate.presentation.viewmodel.LoginViewModel
 import com.example.lingvomate.presentation.ui.theme.Violet
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.remote.Stream
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginView(
-        onNavigateTo = {},
-        state = LoginScreenState(),
-        onEvent = {},
-        isAuthenticated = false,
-        loginMessage = ""
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun LoginScreenPreview() {
+//    LoginView(
+//        onNavigateTo = {},
+//        state = LoginScreenState(),
+//        onEvent = {},
+//        isAuthenticated = {false},
+//        loginMessage = ""
+//    )
+//}
 
 @Composable
 fun LoginScreen(
@@ -77,7 +83,6 @@ fun LoginScreen(
         onNavigateTo = onNavigateTo,
         onEvent = viewModel::onEvent,
         state = viewModel.state,
-        isAuthenticated = viewModel.isAuthenticated,
         loginMessage = viewModel.loginMessage
     )
 }
@@ -87,11 +92,12 @@ fun LoginView(
     onNavigateTo : (Screen) -> Unit = {},
     state : LoginScreenState = LoginScreenState(),
     onEvent : (LoginScreenEvent) -> Unit = {},
-    isAuthenticated : Boolean,
     loginMessage : String
  ) {
     val context = LocalContext.current
     var passwordVisible by remember { mutableStateOf(false) }
+
+
     Box(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Button(
@@ -199,12 +205,7 @@ fun LoginView(
                                 .fillMaxWidth()
                                 .height(46.dp),
                             onClick = {
-                                onEvent(LoginScreenEvent.SignIn())
-                                if (isAuthenticated) {
-                                    onNavigateTo(Screen.Home)
-                                }else {
-                                    Toast.makeText(context, loginMessage, Toast.LENGTH_LONG).show()
-                                }
+                                onEvent(LoginScreenEvent.SignIn( onSuccess = onNavigateTo))
                             }, colors = ButtonDefaults.buttonColors(
                                 containerColor = Violet
                             )
@@ -227,10 +228,8 @@ fun LoginView(
 
                         OutlinedButton(modifier = Modifier.fillMaxWidth(),
                             onClick = {
-                                onEvent(LoginScreenEvent.GoogleSignIn(context))
-                                if (isAuthenticated) {
-                                    onNavigateTo(Screen.Home)
-                                }
+                                onEvent(LoginScreenEvent.GoogleSignIn(context,onNavigateTo))
+                                onNavigateTo(Screen.Home)
                             }) {
                             Image(
                                 painter = painterResource(R.drawable.google_icon),
@@ -245,7 +244,6 @@ fun LoginView(
                         }
 
                         Spacer(modifier = Modifier.height(30.dp))
-
 
                     }
 

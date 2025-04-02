@@ -1,6 +1,5 @@
 package com.example.lingvomate.presentation.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,8 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,14 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lingvomate.model.Channel
 import com.example.lingvomate.presentation.navigation.Screen
 import com.example.lingvomate.presentation.screen.state.HomeScreenEvent
 import com.example.lingvomate.presentation.viewmodel.HomeViewModel
-import kotlin.reflect.KFunction1
+import kotlinx.coroutines.flow.StateFlow
 
 
 //@Composable
@@ -58,13 +53,14 @@ fun HomeScreen(
     onNavigateTo :(Screen) -> Unit,
     viewModel: HomeViewModel
 )   {
-
     HomeView(
         onNavigateTo = onNavigateTo,
         onEvent = viewModel::onEvent,
-        channels = viewModel.channels.collectAsState()
+        channels = viewModel.channels
     )
 }
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,7 +68,7 @@ fun HomeScreen(
 fun HomeView(
     onNavigateTo:(Screen) -> Unit,
     onEvent: (HomeScreenEvent) -> Unit,
-    channels : State<List<Channel>>
+    channels: StateFlow<List<Channel>>,
 ) {
     val addChannel = remember {
         mutableStateOf(false)
@@ -83,7 +79,7 @@ fun HomeView(
     Scaffold (floatingActionButton = {
         Box(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(bottom = 46.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(Color.Cyan)
                 .clickable {
@@ -93,24 +89,7 @@ fun HomeView(
             Text("Add Channel", modifier = Modifier.padding(16.dp))
         }
     }, ){
-        Box(modifier = Modifier.padding(it).fillMaxSize()) {
-            LazyColumn {
-                items(channels.value) { channel ->
-                    Column {
-                        Text(text =  channel.name
-                            , modifier = Modifier.fillMaxWidth().padding(8.dp)
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(Color.Cyan.copy(alpha = 0.3f))
-                                .clickable {
-                                    onNavigateTo(Screen.Chat)
-                                }.padding(16.dp))
-
-                    }
-                }
-
-            }
-            Spacer(modifier = Modifier.height(70.dp))
-
+        Column(modifier = Modifier.padding(it).fillMaxSize()) {
             OutlinedButton(modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     onEvent(HomeScreenEvent.SignOut())
@@ -123,6 +102,22 @@ fun HomeView(
                     style = MaterialTheme.typography.titleMedium
                 )
             }
+            LazyColumn {
+                items(channels.value) { channel ->
+                    Column {
+                        Text(text =  channel.name
+                            , modifier = Modifier.fillMaxWidth().padding(8.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color.Cyan.copy(alpha = 0.3f))
+                                .clickable {
+                                    onNavigateTo(Screen.Chat)
+                                }.padding(16.dp))
+                    }
+                }
+
+            }
+            Spacer(modifier = Modifier.height(70.dp))
+
 
         }
     }
@@ -137,6 +132,8 @@ fun HomeView(
         }
     }
 }
+
+
 
 @Composable
 fun AddChannelDialog(onAddChannel: (String) -> Unit) {

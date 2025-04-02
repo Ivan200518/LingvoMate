@@ -69,7 +69,7 @@ fun RegisterScreen(
 fun RegisterView(
     onNavigateTo : (Screen) -> Unit = {},
     state : RegisterScreenState = RegisterScreenState(),
-    registerDataError: MutableState<RegisterDataError>,
+    registerDataError: RegisterDataError,
     onEvent : (RegisterScreenEvent) -> Unit = {},
     isFormValid : Boolean
 ) {
@@ -135,7 +135,7 @@ fun RegisterView(
                             placeholder = {
                                 Text(text = stringResource(R.string.email_enter))
                             } ,supportingText = {
-                                Text(text = registerDataError.value.emailError, color = MaterialTheme.colorScheme.error)
+                                Text(text = registerDataError.emailError, color = MaterialTheme.colorScheme.error)
                             }
 
                         )
@@ -146,8 +146,8 @@ fun RegisterView(
                                 .width(310.dp),
                             value = state.password,
                             onValueChange = {
-                                onEvent(RegisterScreenEvent.ValidatePassword())
                                 onEvent(RegisterScreenEvent.PasswordUpdated(it))
+                                onEvent(RegisterScreenEvent.ValidatePassword())
                             },
                             textStyle = TextStyle(fontSize = 20.sp),
                             visualTransformation = PasswordVisualTransformation(),
@@ -158,7 +158,7 @@ fun RegisterView(
                                 Text(text = stringResource(R.string.password_enter))
                             }, singleLine = true,
                             supportingText = {
-                                Text(text = registerDataError.value.passwordError, color = MaterialTheme.colorScheme.error)
+                                Text(text = registerDataError.passwordError, color = MaterialTheme.colorScheme.error)
                             }
                         )
                         OutlinedTextField(
@@ -168,6 +168,7 @@ fun RegisterView(
                             value = state.confirmPassword,
                             onValueChange = {
                                 onEvent(RegisterScreenEvent.ConfirmPasswordUpdated(it))
+                                onEvent(RegisterScreenEvent.ValidatePassword())
                             },
                             textStyle = TextStyle(fontSize = 20.sp),
                             visualTransformation = PasswordVisualTransformation(),
@@ -213,7 +214,7 @@ fun RegisterView(
 @Preview(showBackground = true)
 @Composable
 fun RegisterPreview() {
-    val error = remember { mutableStateOf(RegisterDataError()) }
+    val error = RegisterDataError()
     RegisterView(
         onEvent = {},
         onNavigateTo = {},

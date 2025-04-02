@@ -140,21 +140,19 @@ fun ChatBubble(message: Message) {
         R.color.teal_200
     }
 
-    Row(modifier = Modifier.fillMaxWidth().padding(
-        vertical = 5.dp,
+    Box(modifier = Modifier.fillMaxWidth().padding(
+        vertical = 4.dp,
         horizontal = 8.dp
-    ), horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.Bottom){
+    )){
         val alignment = if (isCurrentUser) Alignment.CenterEnd else Alignment.CenterStart
         Box(
-            contentAlignment = alignment,
-            modifier = Modifier.padding(5.dp)
+            modifier = Modifier.padding(10.dp)
                 .background(
                     color = colorResource(bubbleColor),
                     shape = RoundedCornerShape(10.dp)
-                ).height(20.dp)
+                ).align(alignment)
         ) {
-            Text(text = message.message, fontSize = 13.sp)
+            Text(text = message.message, fontSize = 16.sp, modifier = Modifier.padding(start = 5.dp, top = 5.dp))
         }
     }
 }

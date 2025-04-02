@@ -36,7 +36,7 @@ class ChatViewModel: ViewModel() {
             imageUrl = null,
 
         )
-        db.getReference("messages").child(channelId).push().setValue(message)
+        db.reference.child("messages").child(channelId).push().setValue(message)
     }
 
     fun listenForMessages(channelId: String) {

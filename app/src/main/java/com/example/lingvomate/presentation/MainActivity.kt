@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.navigation.compose.rememberNavController
+import com.example.lingvomate.presentation.navigation.MainApp
 import com.example.lingvomate.presentation.navigation.MainNav
 import com.example.lingvomate.presentation.viewmodel.LoginViewModel
 import com.example.lingvomate.presentation.ui.theme.LingvoMateTheme
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
                 val viewModel = getViewModel<LoginViewModel>()
                 val homeViewModel = getViewModel<HomeViewModel>()
                 val chatViewModel = getViewModel<ChatViewModel>()
-                MainNav(
+                MainApp(
                     navHostController = rememberNavController(),
                     loginViewModel = viewModel,
                     homeViewModel = homeViewModel,
