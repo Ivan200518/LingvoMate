@@ -31,22 +31,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.lingvomate.model.Channel
 import com.example.lingvomate.presentation.navigation.Screen
 import com.example.lingvomate.presentation.screen.state.HomeScreenEvent
 import com.example.lingvomate.presentation.viewmodel.HomeViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.coroutines.coroutineContext
 
 
-//@Composable
-//@Preview(showBackground = true)
-//fun HomePreview() {
-//    HomeView(
-//        onNavigateTo = {},
-//        onEvent =  {},
-//    )
-//}
+@Composable
+@Preview(showBackground = true)
+fun HomePreview() {
+    val channels = MutableStateFlow<List<Channel>>(emptyList())
+    HomeView(
+        onNavigateTo = {},
+        onEvent =  {},
+        channels = channels
+    )
+}
 
 @Composable
 fun HomeScreen(
